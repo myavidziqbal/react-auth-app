@@ -68,9 +68,25 @@ class App extends Component {
       .catch(err => console.log(err));
   };
 
+  handleLogut = () => {
+    this.setState({
+      authentication: false,
+      employeesData: []
+    });
+    localStorage.removeItem("token");
+  };
+
+  componentDidMount = () => {
+    if (localStorage.token) {
+      this.setState({
+        authentication: true,
+      });
+    }
+  };
+
   render() {
     return (
-      <div className="App">
+      <div>
         <h1>Login API</h1>
         <Login submitLogin={this.submitLogin} />
         <hr />
@@ -85,9 +101,12 @@ class App extends Component {
           <h1>Anda Belum Login!</h1>
         )}
         <button onClick={this.getEmployeesData}>Get Employees Data</button>
-        {this.state.employeesData.map((employee, i) => ( 
+        {this.state.employeesData.map((employee, i) => (
           <EmployeeDetail data={employee} key={i} />
-        ))}
+        ))}<br/>
+
+        <h1>Logout</h1>
+        <button onClick={this.handleLogut}>Logut</button>
       </div>
     );
   }
